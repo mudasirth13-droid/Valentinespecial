@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Will You Be My Valentine?</title>
+
+<style>
+body {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Heartbeat animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Pink glow effect */
+.glowPulse {
+  background: #ff1493 !important;
+  box-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493, 0 0 30px #ff69b4;
+  animation: heartbeat 1s infinite;
+}
+
+/* Main Box */
+.container {
+    background: white;
+    padding: 25px 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+/* GIF */
+#valentineGif {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+/* Title */
+h1 {
+    color: #ff3366;
+}
+
+/* Buttons */
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#yesBtn {
+    background: #ff3366;
+    color: white;
+    margin-right: 10px;
+}
+
+#noBtn {
+    background: #ddd;
+    color: black;
+    position: absolute;
+}
+
+/* Floating Hearts */
+.heart {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+#giftScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.giftCard {
+    position: relative;
+    z-index: 30;
+
+    background: white;
+    padding: 45px 40px;
+    border-radius: 28px;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(255, 105, 180, 0.35);
+    animation: fadeIn 1.2s ease;
+}
+
+.giftTitle {
+    color: #ff3366;
+    margin-bottom: 10px;
+}
+
+.giftHint {
+    color: #777;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+#giftBox {
+    width: 200px;
+    cursor: pointer;
+    animation: softPulse 1.6s infinite;
+}
+
+@keyframes softPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Rose reveal container */
+#roseReveal {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Rose bouquet image */
+#roseBouquet {
+    width: 160px;
+    opacity: 0;
+}
+
+/* Rose text */
+#roseText {
+    color: #ff3366;
+    font-size: 18px;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+/* Rose pop animation */
+@keyframes rosePop {
+    from {
+        transform: translateY(60px) scale(0.4);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.rosePop {
+    animation: rosePop 0.9s ease-out forwards;
+}
+
+/* Chocolate container */
+#chocoReveal {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#chocoImage {
+    width: 140px;
+    opacity: 0;
+}
+
+/* Teddy container */
+#teddyReveal {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#teddyImage {
+    width: 150px;
+    opacity: 0;
+}
+
+/* Letter container */
+#letterReveal {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#letterImage {
+    width: 140px;
+    opacity: 0;
+}
+
+/* Dim background overlay */
+#dimOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+    z-index: 15;
+}
+
+/* Bring heart above the darkness */
+#heartReveal {
+    position: relative;
+    z-index: 999;
+}
+
+/* Soft glow for final heart */
+#heartImage {
+    filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.9));
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <!-- MAIN GIF -->
+    <h2 id="gugguText">Hey Guggu 💖</h2>
+    <img id="valentineGif" src="normal.gif">
+
+    <h1 id="mainText">Will you be my Valentine? 💖</h1>
+
+    <button id="yesBtn">Yes!</button>
+    <button id="noBtn">No</button>
+</div>
+<audio id="bgMusic" src="song.mp3"></audio>
+<div id="giftScreen">
+    <div class="giftCard">
+        <h2 class="giftTitle">A little something for you 💝</h2>
+        <p class="giftHint">
+            There are five surprises waiting inside.  
+            Tap one after another to reveal them 💕
+        </p>
+
+
+        <img id="giftBox" src="gift_closed.png">
+
+
+<!-- Rose reveal (hidden initially) -->
+<div id="roseReveal">
+    <img id="roseBouquet" src="rose_bouquet.png">
+    <p id="roseText"></p>
+</div>
+
+<!-- Chocolate reveal -->
+<div id="chocoReveal">
+    <img id="chocoImage" src="chocolate.png">
+    <p id="chocoText"></p>
+</div>
+
+<!-- Teddy reveal -->
+<div id="teddyReveal">
+    <img id="teddyImage" src="teddy.png">
+    <p id="teddyText"></p>
+</div>
+
+<!-- Letter reveal -->
+<div id="letterReveal">
+    <img id="letterImage" src="letter.png">
+    <p id="letterText"></p>
+</div>
+
+<!-- Final Heart Reveal -->
+<div id="heartReveal" style="display:none; margin-top:20px; text-align:center;">
+    <img id="heartImage" src="heart.png" style="width:150px; opacity:0;">
+    <p id="heartText" style="color:#ff3366; font-size:20px; margin-top:12px; font-weight:600;"></p>
+  </div>
+ 
+
+ </div>
+</div>
+
+<!-- Dim Overlay -->
+<div id="dimOverlay"></div>
+
+<script>
+// GIF LINKS (CHANGE THESE)
+const normalGif = "normal.gif"; // cute default
+const noGif = "no.gif"; // sad/funny when NO
+const yesGif = "yes.gif"; // happy when YES
+
+const gif = document.getElementById("valentineGif");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+
+// No button messages
+const messages = [
+  "Are you sure?",
+  "Really sure?",
+  "Please think about it",
+  "Change in heart?",
+  "Baby please? 🥺"
+];
+let count = 0;
+
+// NO BUTTON RUNS + CHANGES GIF
+noBtn.addEventListener("mouseover", () => {
+    gif.src = noGif;
+
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    if (count < messages.length) {
+        noBtn.innerText = messages[count];
+        count++;
+    }
+});
+
+// YES BUTTON CHANGES GIF
+
+yesBtn.onclick = () => {
+    gif.src = yesGif;
+    document.getElementById("bgMusic").play();
+
+    // Change top and main text (optional)
+    document.getElementById("gugguText").innerText = "Yayy I knew you'd say yes! 💕";
+    document.getElementById("mainText").innerText = "I love you so meowch ❤️🐱";
+
+    // CHANGE YES BUTTON TEXT
+    yesBtn.innerText = "Click here to claim your Valentine gifts 😳";
+
+    // Make button bigger and cute
+    yesBtn.style.padding = "15px 30px";
+    yesBtn.style.fontSize = "18px";
+
+     // Make it glow and beat
+     yesBtn.classList.add("glowPulse");
+
+     // HIDE NO BUTTON
+     noBtn.style.display = "none";
+
+    // When she clicks the YES button again
+    yesBtn.onclick = () => {
+        document.querySelector(".container").style.display = "none";
+        document.getElementById("giftScreen").style.display = "flex";
+};
+
+
+};
+
+
+
+
+// Floating Hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 300);
+
+const giftBox = document.getElementById("giftBox");
+const roseReveal = document.getElementById("roseReveal");
+const roseBouquet = document.getElementById("roseBouquet");
+const roseText = document.getElementById("roseText");
+
+const chocoReveal = document.getElementById("chocoReveal");
+const chocoImage = document.getElementById("chocoImage");
+const chocoText = document.getElementById("chocoText");
+
+const teddyReveal = document.getElementById("teddyReveal");
+const teddyImage = document.getElementById("teddyImage");
+const teddyText = document.getElementById("teddyText");
+
+const letterReveal = document.getElementById("letterReveal");
+const letterImage = document.getElementById("letterImage");
+const letterText = document.getElementById("letterText");
+
+const heartReveal = document.getElementById("heartReveal");
+const heartImage = document.getElementById("heartImage");
+const heartText = document.getElementById("heartText");
+
+let giftStep = 0;
+
+giftBox.onclick = () => {
+
+    // STEP 1 — ROSES 🌹
+    if (giftStep === 0) {
+        giftBox.src = "gift_open.png";
+
+        setTimeout(() => {
+            roseReveal.style.display = "block";
+            roseBouquet.classList.add("rosePop");
+            roseText.innerText =
+                "Roses for the one who makes my heart bloom 🌹💗";
+        }, 1000);
+
+        giftStep++;
+    }
+
+    // STEP 2 — CHOCOLATE 🍫
+    else if (giftStep === 1) {
+
+        // Hide roses
+        roseReveal.style.display = "none";
+        roseBouquet.classList.remove("rosePop");
+
+        // Show chocolate after short pause
+        setTimeout(() => {
+            chocoReveal.style.display = "block";
+            chocoImage.classList.add("rosePop");
+            chocoText.innerText =
+                "I brought chocolates but honestly you are the real treat 🐒🙈";
+        }, 400);
+
+        giftStep++;
+    }
+
+    // STEP 3 — TEDDY 🧸
+else if (giftStep === 2) {
+
+    // Hide chocolate
+    chocoReveal.style.display = "none";
+    chocoImage.classList.remove("rosePop");
+
+    // Show teddy
+    setTimeout(() => {
+        teddyReveal.style.display = "block";
+        teddyImage.classList.add("rosePop");
+        teddyText.innerText =
+            "A teddy because you deserve endless cuddles 🧸💗";
+    }, 400);
+
+    giftStep++;
+}
+
+    // STEP 4 — LETTER 💌
+else if (giftStep === 3) {
+
+    // Hide teddy
+    teddyReveal.style.display = "none";
+    teddyImage.classList.remove("rosePop");
+
+    // Show letter
+    setTimeout(() => {
+        letterReveal.style.display = "block";
+        letterImage.classList.add("rosePop");
+        letterText.innerText =
+            "A letter straight from my heart 💌";
+    }, 400);
+
+    giftStep++;
+}
+
+   // STEP 5 — FINAL HEART 💗
+else if (giftStep === 4) {
+
+    // Hide letter
+    letterReveal.style.display = "none";
+    letterImage.classList.remove("rosePop");
+
+     // Dim the screen
+    setTimeout(() => {
+        document.getElementById("dimOverlay").style.opacity = "1";
+    }, 200);
+
+    // Show heart above darkness
+    setTimeout(() => {
+        heartReveal.style.display = "block";
+        heartImage.style.opacity = "1";
+        heartImage.classList.add("rosePop", "glowPulse");
+        heartText.innerHTML =
+            "My greatest and final gift is my heart 💗<br>Forever yours";
+    }, 700);
+
+    // No more clicks
+    giftBox.style.display = "none";
+}
+};
+
+
+
+</script>
+
+</body>
+
+</html>
+
